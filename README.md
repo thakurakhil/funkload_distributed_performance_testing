@@ -1,14 +1,14 @@
 # Distributed Performance Testing
 
-Following are the servers that are tested in our project:
+** Following are the servers that are tested in our project:
 
-##Apache
-##Nginx
-##Mysql
-##Redis
+Apache
+Mysql
+Nginx
+Redis
 
-Following are the tools used in the process:
-##Funkload
-##Sysbench
+** Following are the tools used in the process:
+Funkload
+Sysbench
 
-##Cluster setup using Kubernetes with Docker
+**Cluster setup using Kubernetes with Docker
