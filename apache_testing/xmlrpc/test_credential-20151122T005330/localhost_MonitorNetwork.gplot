@@ -1,0 +1,10 @@
+set output "/root/funkload-demo/xmlrpc/test_credential-20151122T005330/localhost_MonitorNetwork.png"
+set terminal png size 640,540
+set grid back
+set xdata time
+set timefmt "%H:%M:%S"
+set format x "%H:%M"
+set multiplot layout 1, 1
+set title "Network traffic"
+set ylabel "[kB]"
+plot "/root/funkload-demo/xmlrpc/test_credential-20151122T005330/localhost_MonitorNetwork.data" u 1:2 title "Out" with lines lw 2, "" u 1:3 title "In" with lines lw 2
