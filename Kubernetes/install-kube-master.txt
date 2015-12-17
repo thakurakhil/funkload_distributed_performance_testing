@@ -1,0 +1,113 @@
+#!/bin/bash
+sudo yum install -y \
+kubernetes-0.15.0-0.3.git0ea87e4.el7 \
+etcd-2.0.9-2.el7 \
+docker-1.6.0-11.0.1.el7.centos \
+flannel-0.2.0-7.el7
+
+
+
+/etc/etcd/etcd.conf
+# [member]
+ETCD_NAME=default
+ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
+#ETCD_SNAPSHOT_COUNTER="10000"
+#ETCD_HEARTBEAT_INTERVAL="100"
+#ETCD_ELECTION_TIMEOUT="1000"
+ETCD_LISTEN_PEER_URLS="http://localhost:2380,http://localhost:7001"
+ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:4001,http://0.0.0.0:2379"
+#ETCD_MAX_SNAPSHOTS="5"
+#ETCD_MAX_WALS="5"
+#ETCD_CORS=""
+#
+#[cluster]
+#ETCD_INITIAL_ADVERTISE_PEER_URLS="http://localhost:2380,http://localhost:7001"
+# if you use different ETCD_NAME (e.g. test), set ETCD_INITIAL_CLUSTER value for this name, i.e. "test=http://..."
+#ETCD_INITIAL_CLUSTER="default=http://localhost:2380,default=http://localhost:7001"
+#ETCD_INITIAL_CLUSTER_STATE="new"
+#ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
+#ETCD_ADVERTISE_CLIENT_URLS="http://localhost:2379,http://localhost:4001"
+#ETCD_DISCOVERY=""
+#ETCD_DISCOVERY_SRV=""
+#ETCD_DISCOVERY_FALLBACK="proxy"
+#ETCD_DISCOVERY_PROXY=""
+#
+#[proxy]
+#ETCD_PROXY="off"
+#
+#[security]
+#ETCD_CA_FILE=""
+#ETCD_CERT_FILE=""
+#ETCD_KEY_FILE=""
+#ETCD_PEER_CA_FILE=""
+#ETCD_PEER_CERT_FILE=""
+#ETCD_PEER_KEY_FILE=""
+
+
+/etc/kubernetes/controller-manager
+###
+# The following values are used to configure the kubernetes controller-manager
+
+# defaults from config and apiserver should be adequate
+
+# Comma separated list of minions
+#KUBELET_ADDRESSES="--machines=127.0.0.1"
+
+# Add you own!
+KUBE_CONTROLLER_MANAGER_ARGS=""
+
+
+
+/etc/kubernetes/config
+###
+# kubernetes system config
+#
+# The following values are used to configure various aspects of all
+# kubernetes services, including
+#
+#   kube-apiserver.service
+#   kube-controller-manager.service
+#   kube-scheduler.service
+#   kubelet.service
+#   kube-proxy.service
+# logging to stderr means we get it in the systemd journal
+KUBE_LOGTOSTDERR="--logtostderr=true"
+
+# journal message level, 0 is debug
+KUBE_LOG_LEVEL="--v=0"
+
+# Should this cluster be allowed to run privileged docker containers
+KUBE_ALLOW_PRIV="--allow_privileged=false"
+
+# How the controller-manager, scheduler, and proxy find the apiserver
+KUBE_MASTER="--master=<master-ip>:8080"
+
+
+
+/etc/kubernetes/apiserver
+###
+# kubernetes system config
+#
+# The following values are used to configure the kube-apiserver
+#
+
+# The address on the local server to listen to.
+KUBE_API_ADDRESS="--address=0.0.0.0"
+
+# The port on the local server to listen on.
+# KUBE_API_PORT="--port=8080"
+
+# Port minions listen on
+# KUBELET_PORT="--kubelet_port=10250"
+
+# Comma separated list of nodes in the etcd cluster
+KUBE_ETCD_SERVERS="--etcd_servers=<master-ip>:4001"
+
+# Address range to use for services
+KUBE_SERVICE_ADDRESSES="--portal_net=10.254.0.0/16"
+
+# default admission control policies
+KUBE_ADMISSION_CONTROL="--admission_control=NamespaceAutoProvision,LimitRanger,ResourceQuota"
+
+# Add you own!
+KUBE_API_ARGS=""
