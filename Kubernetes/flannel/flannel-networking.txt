@@ -1,0 +1,37 @@
+For this example, flannel assigns an address range of 10.20.0.0/16 to be used by all nodes in the Kubernetes environment. This allow a separate /24 subnets within that range to be assigned to network interfaces on the master and both nodes. For the three systems in this example, the steps below resulted in the following address ranges being assigned to flannel.1 and docker0 interfaces:
+
+master:
+flannel.1: 10.20.21.0/16
+node1:
+flannel.1: 10.20.26.0/16
+docker0: 10.20.26.1/24
+node2:
+flannel.1: 10.20.37.0/16
+docker0: 10.20.37.1/24
+
+Steps
+on master
+etcdctl set coreos.com/network/config < flannel-config.json
+etcdctl get coreos.com/network/config
+
+on master and nodes
+sudo vi /etc/sysconfig/flanneld
+# Flanneld configuration options
+
+# etcd url location.  Point this to the server where etcd runs
+FLANNEL_ETCD="<master-ip>:4001"
+
+# etcd config key.  This is the configuration key that flannel queries
+# For address range assignment
+FLANNEL_ETCD_KEY="/coreos.com/network"
+
+# Any additional options that you want to pass
+#FLANNEL_OPTIONS=""
+
+
+restart service
+
+sudo systemctl restart flanneld
+sudo systemctl enable flanneld
+sudo systemctl status flanneld -l
+
