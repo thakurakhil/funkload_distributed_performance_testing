@@ -1,0 +1,60 @@
+#!/bin/bash
+
+sudo yum install -y \
+kubernetes-0.15.0-0.3.git0ea87e4.el7 \
+docker-1.6.0-11.0.1.el7.centos \
+flannel-0.2.0-7.el7
+
+/etc/kubernetes/config
+###
+# kubernetes system config
+#
+# The following values are used to configure various aspects of all
+# kubernetes services, including
+#
+#   kube-apiserver.service
+#   kube-controller-manager.service
+#   kube-scheduler.service
+#   kubelet.service
+#   kube-proxy.service
+# logging to stderr means we get it in the systemd journal
+KUBE_LOGTOSTDERR="--logtostderr=true"
+
+# journal message level, 0 is debug
+KUBE_LOG_LEVEL="--v=0"
+
+# Should this cluster be allowed to run privileged docker containers
+KUBE_ALLOW_PRIV="--allow_privileged=false"
+
+# How the controller-manager, scheduler, and proxy find the apiserver
+KUBE_MASTER="--master=<master-ip>:8080"
+
+
+/etc/kubernetes/kubelet
+###
+# kubernetes kubelet (minion) config
+
+# The address for the info server to serve on (set to 0.0.0.0 or "" for all interfaces)
+KUBELET_ADDRESS="--address=0.0.0.0"
+
+# The port for the info server to serve on
+# KUBELET_PORT="--port=10250"
+
+# You may leave this blank to use the actual hostname
+KUBELET_HOSTNAME="--hostname_override=<slave-hostname>"
+
+# location of the api-server
+KUBELET_API_SERVER="--api_servers=<master-ip>:8080"
+
+# Add your own!
+KUBELET_ARGS="--cadvisor_port=15001  \ --cluster_dns=10.254.0.3 \ --cluster_domain=kube.local"
+
+
+/etc/kubernetes/proxy
+###
+# kubernetes proxy config
+
+# default config should be adequate
+
+# Add your own!
+KUBE_PROXY_ARGS=""
