@@ -1,0 +1,11 @@
+{
+    "apiVersion": "v1beta3",
+    "kind": "Node",
+    "metadata": {
+        "name": "<node-ip>",
+        "labels": {"name" : "node1"}
+    },
+    "spec": {
+        "externalID": "<node-ip>"
+    }
+}
